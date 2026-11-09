@@ -1,0 +1,35 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df_ar = pd.read_csv('arrests_2024_sep2026.csv')
+
+df_ar.columns = df_ar.columns.str.lower()
+df_ar = df_ar.dropna(subset=['neighborhood'])
+
+print(df_ar['neighborhood'].value_counts().tail())
+
+import matplotlib.pyplot as plt
+
+neighborhood_arrests = df_ar.groupby('neighborhood').size().reset_index(name='request_count')
+
+neighborhood_arrests_sorted = neighborhood_arrests.sort_values(by='request_count', ascending=True)
+
+print("Top 10 Neighborhoods with Fewest Arrests:")
+print(neighborhood_arrests_sorted.head(10))
+
+min_v = neighborhood_arrests['request_count'].min()
+max_v = neighborhood_arrests['request_count'].max()
+neighborhood_arrests['score_311'] = 100 * (1 - (neighborhood_arrests['request_count'] - min_v) / (max_v - min_v))
+
+neighborhood_scores = neighborhood_arrests[['neighborhood', 'request_count', 'score_311']].sort_values(by='score_311', ascending=False)
+
+plt.figure(figsize=(10, 6))
+plt.barh(neighborhood_arrests_sorted['neighborhood'].head(10), 
+         neighborhood_arrests_sorted['request_count'].head(10), 
+         color='green')
+plt.xlabel('Total 311 Complaints')
+plt.ylabel('Neighborhood')
+plt.title('Top 10 Pittsburgh Neighborhoods with Fewest Arrests')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.show()
