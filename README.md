@@ -32,7 +32,7 @@ This repository analyzes municipal 311 service requests, city park availability,
 ---
 
 ## Structure
-* `311 Data/` – Submetric notebook analyzing 311 service request counts and metric normalization.
+* `311.ipynb` – Submetric notebook analyzing 311 service request counts and metric normalization.
 * `parks.ipynb` – Submetric notebook analyzing city park distribution.
 * `arrests.ipynb` – Submetric notebook analyzing police arrest frequencies.
 * `final.ipynb` – Final synthesized notebook aggregating all three metrics into an overall neighborhood ranking.
